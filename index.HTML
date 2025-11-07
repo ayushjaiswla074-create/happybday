@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Happy Birthday Samriddhi 🎂</title>
+<style>
+:root{--bg:#0f1724;--accent:#ff6b6b}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
+body{background:var(--bg);color:white;overflow-x:hidden}
+
+
+.hero{position:relative;text-align:center;height:100vh;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.hero img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.5;filter:blur(4px)}
+.hero-content{position:relative;z-index:2;text-shadow:0 4px 20px rgba(0,0,0,0.6)}
+h1{font-size:3rem;margin-bottom:1rem;animation:pop 1.2s ease forwards}
+@keyframes pop{0%{transform:scale(0.8);opacity:0}100%{transform:scale(1);opacity:1}}
+
+
+.cake{font-size:80px;cursor:pointer;transition:transform .3s;}
+.cake:hover{transform:scale(1.2)}
+
+
+footer{text-align:center;padding:20px;color:#cbd5e1;font-size:14px}
+</style>
+</head>
+<body>
+<div class="hero">
+<img class="bg" src="samriddhi.jpg" alt="Samriddhi photo">
+<div class="hero-content">
+<h1>Happy Birthday Samriddhi 🎂</h1>
+<div class="cake" id="cake">🎂</div>
+</div>
+</div>
+<footer>Made with ❤️ just for you, Samriddhi.</footer>
+
+
+<audio id="song" src="happybirthday.mp3" preload="auto"></audio>
+
+
+<script>
+const cake=document.getElementById('cake');
+const song=document.getElementById('song');
+cake.addEventListener('click',()=>{
+alert('🎉 Happy Birthday Samriddhi! 🎉');
+song.play().catch(()=>{});
+});
+</script>
+</body>
+</html>
