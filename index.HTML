@@ -1,51 +1,83 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Happy Birthday Samriddhi 🎂</title>
-<style>
-:root{--bg:#0f1724;--accent:#ff6b6b}
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
-body{background:var(--bg);color:white;overflow-x:hidden}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Happy Birthday Samriddhi 🎂</title>
+  <style>
+    :root{--bg:#0f1724;--accent:#ff6b6b}
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
+    body{background:var(--bg);color:white;overflow-x:hidden;scroll-behavior:smooth}
 
+    .hero{position:relative;text-align:center;height:100vh;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center}
+    .hero img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.5;filter:blur(4px)}
+    .hero-content{position:relative;z-index:2;text-shadow:0 4px 20px rgba(0,0,0,0.6)}
+    h1{font-size:3rem;margin-bottom:1rem;animation:pop 1.2s ease forwards}
+    @keyframes pop{0%{transform:scale(0.8);opacity:0}100%{transform:scale(1);opacity:1}}
 
-.hero{position:relative;text-align:center;height:100vh;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center}
-.hero img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.5;filter:blur(4px)}
-.hero-content{position:relative;z-index:2;text-shadow:0 4px 20px rgba(0,0,0,0.6)}
-h1{font-size:3rem;margin-bottom:1rem;animation:pop 1.2s ease forwards}
-@keyframes pop{0%{transform:scale(0.8);opacity:0}100%{transform:scale(1);opacity:1}}
+    .cake{font-size:80px;cursor:pointer;transition:transform .3s;}
+    .cake:hover{transform:scale(1.2)}
 
+    footer{text-align:center;padding:20px;color:#cbd5e1;font-size:14px}
 
-.cake{font-size:80px;cursor:pointer;transition:transform .3s;}
-.cake:hover{transform:scale(1.2)}
+    canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:5}
 
-
-footer{text-align:center;padding:20px;color:#cbd5e1;font-size:14px}
-</style>
+    .blessings{opacity:0;max-width:700px;margin:80px auto;text-align:center;line-height:1.6;font-size:18px;padding:20px;border-radius:14px;background:rgba(255,255,255,0.05);transition:opacity 1.5s ease;}
+    .blessings.show{opacity:1;}
+    .from{margin-top:20px;font-style:italic;color:#ffd6d6;font-size:16px;}
+  </style>
 </head>
 <body>
-<div class="hero">
-<img class="bg" src="samriddhi.jpg" alt="Samriddhi photo">
-<div class="hero-content">
-<h1>Happy Birthday Samriddhi 🎂</h1>
-<div class="cake" id="cake">🎂</div>
-</div>
-</div>
-<footer>Made with ❤️ just for you, Samriddhi.</footer>
+  <canvas id="confetti"></canvas>
+  <div class="hero">
+    <img class="bg" src="samriddhi.jpg" alt="Samriddhi photo">
+    <div class="hero-content">
+      <h1>Happy Birthday Samriddhi 🎂</h1>
+      <div class="cake" id="cake">🎂</div>
+    </div>
+  </div>
 
+  <div id="blessings" class="blessings">
+    Wishing you a day as bright as your smile and as amazing as you are, Samriddhi! May this year bring endless laughter, exciting adventures, and all the success you dream of. Keep shining and spreading your positive vibes wherever you go — because you truly make the world better just by being in it! 💫
+    <div class="from">— From Ayush Jaiswal 🎉</div>
+  </div>
 
-<audio id="song" src="happybirthday.mp3" preload="auto"></audio>
+  <footer>Made with ❤️ just for you, Samriddhi.</footer>
 
+  <audio id="song" src="happybirthday.mp3" preload="auto"></audio>
 
-<script>
-const cake=document.getElementById('cake');
-const song=document.getElementById('song');
-cake.addEventListener('click',()=>{
-alert('🎉 Happy Birthday Samriddhi! 🎉');
-song.play().catch(()=>{});
-});
-</script>
+  <script>
+    const cake=document.getElementById('cake');
+    const song=document.getElementById('song');
+    const blessings=document.getElementById('blessings');
+
+    cake.addEventListener('click',()=>{
+      alert('🎉 Happy Birthday Samriddhi! 🎉');
+      song.play().catch(()=>{});
+      startConfetti();
+      blessings.classList.add('show');
+      blessings.scrollIntoView({behavior:'smooth'});
+    });
+
+    // --- Confetti Animation ---
+    const canvas=document.getElementById('confetti');
+    const ctx=canvas.getContext('2d');
+    let W,H,particles=[];let animRunning=false;
+
+    function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+    window.addEventListener('resize',resize);resize();
+
+    function rand(min,max){return Math.random()*(max-min)+min}
+    function createParticles(count=200){
+      particles=[];const colors=['#ff6b6b','#ffd166','#6bf2d6','#8ea4ff','#f78fb3'];
+      for(let i=0;i<count;i++){
+        particles.push({x:rand(0,W),y:rand(-H,0),vx:rand(-2,2),vy:rand(2,6),r:rand(4,10),color:colors[Math.floor(Math.random()*colors.length)],rot:rand(0,360),vr:rand(-5,5)});
+      }
+    }
+    function draw(){ctx.clearRect(0,0,W,H);for(const p of particles){p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;if(p.y>H){p.y=-10;p.x=rand(0,W);}ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.color;ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*1.4);ctx.restore();}}
+    function loop(){draw();if(animRunning)requestAnimationFrame(loop);}
+    function startConfetti(){createParticles();if(!animRunning){animRunning=true;loop();setTimeout(()=>{animRunning=false;},8000);}}
+  </script>
 </body>
 </html>
